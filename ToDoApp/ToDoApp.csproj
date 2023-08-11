@@ -36,6 +36,9 @@
     <None Remove="Entities\Models\" />
     <None Remove="ExceptionsTD\" />
     <None Remove="Services\Notifications\" />
+    <None Remove="ClientApp\src\components\core\" />
+    <None Remove="ClientApp\src\components\core\tasks\" />
+    <None Remove="ClientApp\src\components\core\tasks\add\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +48,9 @@
     <Folder Include="Entities\Models\" />
     <Folder Include="ExceptionsTD\" />
     <Folder Include="Services\Notifications\" />
+    <Folder Include="ClientApp\src\components\core\" />
+    <Folder Include="ClientApp\src\components\core\tasks\" />
+    <Folder Include="ClientApp\src\components\core\tasks\add\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

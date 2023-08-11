@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using ToDoApp.Data;
 using ToDoApp.Services.Notifications;
+using Microsoft.EntityFrameworkCore;
+using ToDoApp.Entities.Models;
 
 public class ScheduledNotificationService : BackgroundService
 {
@@ -41,22 +43,22 @@ public class ScheduledNotificationService : BackgroundService
                     .Where(n => n.Timestamp <= now)
                     .ToList();
 
+                var hubContext = scope.ServiceProvider.GetRequiredService<IHubContext<NotificationHub>>();
+
                 if (notificationsToSend.Count > 0)
                 {
 
                     foreach (var notification in notificationsToSend)
                     {
-                        var hubContext = scope.ServiceProvider.GetRequiredService<NotificationHub>();
-                        await hubContext.SendNotification(notification);
-
-                        dbContext.Notifications.Remove(notification);
+                        await hubContext.Clients.All.SendAsync("ReceiveNotification", notification);
+                        Console.WriteLine("NOtification sent");
+                        //dbContext.Notifications.Remove(notification);
                     }
-
                     await dbContext.SaveChangesAsync();
                 }
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
         }
     }
 }

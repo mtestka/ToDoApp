@@ -32,7 +32,7 @@ namespace ToDoApp.Services.Notifications
             Notification notification = new Notification()
             {
                 ToDoTask = task,
-                Timestamp = task.EventTime
+                Timestamp = task.EventDate
             };
 
             _dbContext.Notifications.Add(notification);

@@ -39,7 +39,10 @@ namespace ToDoApp.Services
 
             _dbContext.ToDoTasks.Add(task);
 
-            await _notificationService.Add(task);
+            if (task.Notify)
+            {
+                await _notificationService.Add(task);
+            }
 
             await _dbContext.SaveChangesAsync();
         }

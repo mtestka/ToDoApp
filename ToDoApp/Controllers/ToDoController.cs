@@ -13,7 +13,7 @@ namespace ToDoApp.Controllers
         private readonly ILogger<ToDoController> _logger;
         private readonly IToDoTaskService _toDoTaskService;
 
-        public ToDoController(ILogger<ToDoController> logger, ToDoTaskService toDoTaskService)
+        public ToDoController(ILogger<ToDoController> logger, IToDoTaskService toDoTaskService)
         {
             _logger = logger;
             _toDoTaskService = toDoTaskService;
