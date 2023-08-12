@@ -4,10 +4,10 @@ import AddTaskModal from './core/tasks/add/AddTaskModal';
 
 function Header(){
 
-    const [open, setOpen] = useState(false);
+    const [openAddTaskModal, setOpenAddTaskModal] = useState(false);
 
-    function toggleModal() {
-        setOpen(!open);
+    function toggleAddTaskModal() {
+        setOpenAddTaskModal(!openAddTaskModal);
     }
 
     return (
@@ -19,8 +19,8 @@ function Header(){
                 <h1>"ToDo" App</h1>
             </div>
             <div className="w-[200px] text-2xl flex justify-end">
-                <button className="bg-blue-600 py-2 px-4 flex items-center text-white rounded" onClick={() => setOpen(true)}>Add <FiPlusCircle className="ml-4" /></button>
-                <AddTaskModal open={open} setOpen={setOpen} />
+                <button className="bg-blue-600 py-2 px-4 flex items-center text-white rounded" onClick={() => setOpenAddTaskModal(true)}>Add <FiPlusCircle className="ml-4" /></button>
+                <AddTaskModal open={openAddTaskModal} setOpen={setOpenAddTaskModal} />
             </div>
         </div>
     );

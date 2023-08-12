@@ -20,11 +20,11 @@ namespace ToDoApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ToDoTask>> Get()
+        public async Task<IEnumerable<ToDoTask>> Get(DateTime? date)
         {
             try
             {
-                return await _toDoTaskService.GetAsync();
+                return await _toDoTaskService.GetAsync(date);
             }
             catch(Exception ex)
             {
@@ -73,12 +73,52 @@ namespace ToDoApp.Controllers
             }
         }
 
-        [HttpPost("{id:int}")]
-        public async Task<IActionResult> Add([FromForm] ToDoTask toDoTask, int id)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm] ToDoTask toDoTask)
         {
             try
             {
-                await _toDoTaskService.Add(toDoTask);
+                await _toDoTaskService.Update(toDoTask);
+                return Ok();
+            }
+            catch (NotFoundException ex)
+            {
+                _logger.LogError($"NotFoundException occurred: {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception occurred: {ex.Message}");
+                throw;
+            }
+        }
+
+        [HttpPatch("{id:int}/Check")]
+        public async Task<IActionResult> CheckTask(int id)
+        {
+            try
+            {
+                await _toDoTaskService.CheckTask(id);
+                return Ok();
+            }
+            catch (NotFoundException ex)
+            {
+                _logger.LogError($"NotFoundException occurred: {ex.Message}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception occurred: {ex.Message}");
+                throw;
+            }
+        }
+
+        [HttpPatch("{id:int}/Uncheck")]
+        public async Task<IActionResult> UncheckTask(int id)
+        {
+            try
+            {
+                await _toDoTaskService.UncheckTask(id);
                 return Ok();
             }
             catch (NotFoundException ex)

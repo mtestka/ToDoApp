@@ -39,6 +39,7 @@
     <None Remove="ClientApp\src\components\core\" />
     <None Remove="ClientApp\src\components\core\tasks\" />
     <None Remove="ClientApp\src\components\core\tasks\add\" />
+    <None Remove="ClientApp\src\components\core\tasks\edit\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +52,7 @@
     <Folder Include="ClientApp\src\components\core\" />
     <Folder Include="ClientApp\src\components\core\tasks\" />
     <Folder Include="ClientApp\src\components\core\tasks\add\" />
+    <Folder Include="ClientApp\src\components\core\tasks\edit\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

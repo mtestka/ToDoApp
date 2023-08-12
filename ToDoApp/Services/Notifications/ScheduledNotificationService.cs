@@ -39,7 +39,7 @@ public class ScheduledNotificationService : BackgroundService
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
                 var now = DateTime.UtcNow.AddMinutes(15);
-                var notificationsToSend = dbContext.Notifications
+                var notificationsToSend = dbContext.Notifications.Include(a=>a.ToDoTask)
                     .Where(n => n.Timestamp <= now)
                     .ToList();
 
@@ -51,14 +51,13 @@ public class ScheduledNotificationService : BackgroundService
                     foreach (var notification in notificationsToSend)
                     {
                         await hubContext.Clients.All.SendAsync("ReceiveNotification", notification);
-                        Console.WriteLine("NOtification sent");
-                        //dbContext.Notifications.Remove(notification);
+                        dbContext.Notifications.Remove(notification);
                     }
                     await dbContext.SaveChangesAsync();
                 }
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
     }
 }

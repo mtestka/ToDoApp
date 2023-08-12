@@ -49,10 +49,11 @@ namespace ToDoApp.Services
         /// <summary>
         /// Get all ToDoTasks
         /// </summary>
+        /// <param name="date">Date of ToDoTask, used to return tasks on specific date</param>
         /// <returns>List containing all of ToDoTasks</returns>
-        public async Task<IEnumerable<ToDoTask>> GetAsync()
+        public async Task<IEnumerable<ToDoTask>> GetAsync(DateTime? date)
         {
-            return await _dbContext.ToDoTasks.ToListAsync();
+            return await _dbContext.ToDoTasks.Where(a => date == null || a.EventDate.Date == date.Value.Date).ToListAsync();
         }
         /// <summary>
         /// Get single ToDoTask by ID
@@ -106,6 +107,38 @@ namespace ToDoApp.Services
             var exists = await _dbContext.ToDoTasks.AnyAsync(a => a.Id == id);
             if (!exists)
                 throw new NotFoundException("Task with given ID doesn't exist.");
+        }
+
+        /// <summary>
+        /// Method to check task as done, by filling completedAt field with current date and time
+        /// </summary>
+        /// <param name="id">ID of ToDoTask</param>
+        /// <returns></returns>
+        public async Task CheckTask(int id)
+        {
+            await EnsureTaskExists(id);
+
+            var task = await _dbContext.ToDoTasks.FirstAsync(a => a.Id == id);
+
+            task.CompletedAt = DateTime.UtcNow;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Method to uncheck task, by filling completedAt field with dateMin value
+        /// </summary>
+        /// <param name="id">ID of ToDoTask</param>
+        /// <returns></returns>
+        public async Task UncheckTask(int id)
+        {
+            await EnsureTaskExists(id);
+
+            var task = await _dbContext.ToDoTasks.FirstAsync(a => a.Id == id);
+
+            task.CompletedAt = DateTime.MinValue;
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
