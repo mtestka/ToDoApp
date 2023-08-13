@@ -12,14 +12,14 @@ function ToDoTasksContainer(props) {
     const { refreshFlag } = useSharedState();
 
     const getData = async () => {
-        const response = await fetch('todo')
+        const response = await fetch('todo?date='+props.date)
         const data = await response.json();
         setTasks(data);
     };
 
     useEffect(() => {
         getData();
-    }, [refreshFlag])
+    }, [refreshFlag, props.date])
 
     const handleTaskEdit = (id) => {
         setTaskId(id);

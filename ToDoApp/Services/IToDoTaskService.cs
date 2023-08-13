@@ -7,7 +7,7 @@ namespace ToDoApp.Services
 	{
 		Task<IEnumerable<ToDoTask>> GetAsync(DateTime? date);
 		Task<ToDoTask> GetAsync(int id);
-		Task Add(ToDoTask task);
+        Task Add(ToDoTask task);
 		Task Update(ToDoTask task);
 		Task Remove(int id);
         Task CheckTask(int id);

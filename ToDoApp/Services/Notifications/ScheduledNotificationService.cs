@@ -50,7 +50,7 @@ public class ScheduledNotificationService : BackgroundService
 
                     foreach (var notification in notificationsToSend)
                     {
-                        await hubContext.Clients.All.SendAsync("ReceiveNotification", notification);
+                        await hubContext.Clients.All.SendAsync("ReceiveNotification", notification.Message);
                         dbContext.Notifications.Remove(notification);
                     }
                     await dbContext.SaveChangesAsync();

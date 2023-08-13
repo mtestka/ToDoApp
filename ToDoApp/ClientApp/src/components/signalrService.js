@@ -1,11 +1,12 @@
 ﻿import * as signalR from '@microsoft/signalr';
+import { toast } from 'react-toastify';
 
 const signalrService = {
     connection: null,
 
     startConnection: function () {
         this.connection = new signalR.HubConnectionBuilder()
-            .withUrl("/notificationHub") // Replace with your hub URL
+            .withUrl(process.env.REACT_APP_SIGNALR_HUB_URL)
             .build();
 
         this.connection
@@ -20,8 +21,7 @@ const signalrService = {
 
     subscribeToNotifications: function (callback) {
         this.connection.on("ReceiveNotification", (message) => {
-            console.log("Received notification:", message);
-            callback(message);
+            toast("Task to do: " + message);
         });
     },
 };

@@ -51,7 +51,7 @@ function ToDoTask(props) {
     }
 
     return (
-        <div className="w-full h-[80px] shadow rounded-2xl flex items-center justify-between px-4 py-2" onClick={openEditModal} >
+        <div className="w-full bg-white h-[80px] cursor-pointer shadow-sm hover:drop-shadow-xl rounded-2xl flex items-center justify-between px-4 py-2" onClick={openEditModal} >
             <div className="flex items-center">
                 <div className={"mr-4 rounded-full w-[20px] h-[20px] " + color}>
 
@@ -63,7 +63,7 @@ function ToDoTask(props) {
             <div>
                 {!props.task.isCompleted &&
                     <button className="flex" onClick={checkTask}>
-                        <FiCircle className="text-2xl text-gray-200" />
+                        <FiCircle className="text-2xl text-gray-200 hover:text-gray-500" />
                     </button>
                 }
                 {props.task.isCompleted &&

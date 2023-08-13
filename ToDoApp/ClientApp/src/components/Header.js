@@ -2,7 +2,7 @@
 import { FiCalendar, FiPlusCircle } from "react-icons/fi";
 import AddTaskModal from './core/tasks/add/AddTaskModal';
 
-function Header(){
+function Header(props){
 
     const [openAddTaskModal, setOpenAddTaskModal] = useState(false);
 
@@ -10,10 +10,14 @@ function Header(){
         setOpenAddTaskModal(!openAddTaskModal);
     }
 
+    function handleChangeDate(event) {
+        props.setDate(event.target.value);
+    }
+
     return (
         <div className="h-[100px] w-full justify-between items-center flex px-4 font-bold fixed top-0 left-0 right-0 bg-white">
             <div className="w-[200px] flex items-center select-none cursor-default text-2xl">
-                11.08.2023 <button className="ml-4"><FiCalendar /></button>
+                <input className="text-black" type="date" defaultValue={props.date} onChange={handleChangeDate} /> <FiCalendar className="ml-4" />
             </div>
             <div className="text-3xl">
                 <h1>"ToDo" App</h1>

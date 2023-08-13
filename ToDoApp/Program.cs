@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using System.Text.Json.Serialization;
 using ToDoApp.Services;
 using ToDoApp.Services.Notifications;
+using ToDoApp.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<CorsSettings>();
+    options.AddPolicy("ToDoAppCorsPolicy", builder =>
+    {
+        builder.WithOrigins(corsSettings.AllowedOrigins)
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();
+    });
+});
 
 builder.Services.AddControllersWithViews().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddScoped<IToDoTaskService, ToDoTaskService>();
@@ -39,6 +50,14 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseCors("ToDoAppCorsPolicy");
+
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dataContext.Database.Migrate();
+}
 
 app.UseEndpoints(endpoints =>
 {

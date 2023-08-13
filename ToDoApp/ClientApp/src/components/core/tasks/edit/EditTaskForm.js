@@ -1,15 +1,13 @@
 ﻿import { useState, useEffect } from 'react';
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { useSharedState } from '../../../SharedStateProvider';
+import RemoveModal from '../RemoveModal';
 
 function EditTaskForm(props) {
 
     const { refreshFlag, setRefreshFlag } = useSharedState();
 
-    const curr = new Date();
-    const date = curr.toISOString().substring(0, 10);
-
     const [task, setTask] = useState({});
+    const [openRemove, setOpenRemove] = useState(false);
 
     const getData = async () => {
         const response = await fetch('todo/' + props.id);
@@ -34,8 +32,7 @@ function EditTaskForm(props) {
             });
 
             if (res.status === 200) {
-                props.onSubmit();
-                setRefreshFlag(!refreshFlag);
+                onSuccess();
             } else {
                 console.log("There was an error!");
             }
@@ -47,9 +44,20 @@ function EditTaskForm(props) {
         return;
     };
 
+    function onRemove() {
+        onSuccess();
+        setOpenRemove(false);
+    }
+
+    function onSuccess() {
+        props.onSubmit();
+        setRefreshFlag(!refreshFlag);
+    }
+
     return (
         <div>
             {task.eventDate &&
+            <div>
                 <form id="editTaskForm" className="w-full space-y-4" onSubmit={handleSubmit}>
                     <input
                         type="hidden"
@@ -149,6 +157,9 @@ function EditTaskForm(props) {
                         <p className="text-gray-500 text-sm">Get notified when task should be done.</p>
                     </div>
                 </form>
+                <button className="mt-4 rounded w-full px-3 py-2 text-sm font-semibold text-white bg-red-400" onClick={() => setOpenRemove(true)}>Remove</button>
+                <RemoveModal task={task} onRemove={onRemove} open={openRemove} setOpen={setOpenRemove} />
+            </div>
             }
         </div>
     )

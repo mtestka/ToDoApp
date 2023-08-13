@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './custom.css';
 
 export default class App extends Component {
@@ -16,6 +18,16 @@ export default class App extends Component {
             return <Route key={index} {...rest} element={element} />;
           })}
         </Routes>
+        <ToastContainer
+            position="bottom-right"
+            autoClose={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            theme="light"
+        />
       </Layout>
     );
   }
